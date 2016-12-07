@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace Food
 {
-  public class ReataurantTest : IDisposable
+  public class RestaurantTest : IDisposable
   {
     public RestaurantTest()
     {
@@ -14,26 +14,26 @@ namespace Food
     }
 
     [Fact]
-    public void Test_EqualOverrideTrueForSameDescription()
+    public void Test_EqualOverrideTrueForSameName()
     {
       //Arrange, Act
       Restaurant firstRestaurant = new Restaurant("Resers Chow House", 1);
       Restaurant secondRestaurant = new Restaurant("Resers Chow House", 1);
 
       //Assert
-      Assert.Equal(firstTask, secondTask);
+      Assert.Equal(firstRestaurant, secondRestaurant);
     }
 
     [Fact]
     public void Test_Save()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn", 1);
-      testTask.Save();
+      Restaurant testRestaurant = new Restaurant("Ramens House of Noodles", 1);
+      testRestaurant.Save();
 
       //Act
-      List<Task> result = Task.GetAll();
-      List<Task> testList = new List<Task>{testTask};
+      List<Restaurant> result = Restaurant.GetAll();
+      List<Restaurant> testList = new List<Restaurant>{testRestaurant};
 
       //Assert
       Assert.Equal(testList, result);
@@ -43,32 +43,36 @@ namespace Food
     public void Test_SaveAssignsIdToObject()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn", 1);
-      testTask.Save();
+      Restaurant testRestaurant = new Restaurant("Costcos Pizza Palace", 1);
+      testRestaurant.Save();
 
       //Act
-      Task savedTask = Task.GetAll()[0];
+      Restaurant savedRestaurant = Restaurant.GetAll()[0];
 
-      int result = savedTask.GetId();
-      int testId = testTask.GetId();
+      int result = savedRestaurant.GetId();
+      int testId = testRestaurant.GetId();
 
       //Assert
       Assert.Equal(testId, result);
     }
 
     [Fact]
-    public void Test_FindFindsTaskInDatabase()
+    public void Test_Find_FindsRestaurantInDatabase()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn", 1);
-      testTask.Save();
+      Restaurant testRestaurant = new Restaurant("Pizza Pocket Cove", 1);
+      testRestaurant.Save();
 
       //Act
-      Task foundTask = Task.Find(testTask.GetId());
+      Restaurant foundRestaurant = Restaurant.Find(testRestaurant.GetId());
 
       //Assert
-      Assert.Equal(testTask, foundTask);
+      Assert.Equal(testRestaurant, foundRestaurant);
+    }
+
+    public void Dispose()
+    {
+      Restaurant.DeleteAll();
     }
   }
-
 }
