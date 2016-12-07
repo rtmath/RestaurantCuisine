@@ -41,6 +41,6 @@ namespace Food
   }
   public static class DBConfiguration
   {
-      public static string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=restaurants;Integrated Security=SSPI;";
+      public static string ConnectionString = "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=eating_out;Integrated Security=SSPI;";
   }
 }
