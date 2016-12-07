@@ -70,6 +70,39 @@ namespace Food
       return allCuisines;
     }
 
+    public List<Restaurant> GetRestaurants()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM restaurants WHERE cuisine_id = @CuisineId;", conn);
+
+      SqlParameter cuisineIdParam = new SqlParameter();
+      cuisineIdParam.ParameterName = "@CuisineId";
+      cuisineIdParam.Value = this.GetId();
+      cmd.Parameters.Add(cuisineIdParam);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Restaurant> restaurants = new List<Restaurant>{};
+      while(rdr.Read())
+      {
+        int restaurantId = rdr.GetInt32(0);
+        string restaurantName = rdr.GetString(1);
+        int cuisineId = rdr.GetInt32(2);
+        Restaurant newRestaurant = new Restaurant(restaurantName, cuisineId, restaurantId);
+        restaurants.Add(newRestaurant);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      return restaurants;
+    }
+
     public void Save()
     {
       SqlConnection conn = DB.Connection();
@@ -189,7 +222,7 @@ namespace Food
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM cuisine;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM cuisine; DELETE FROM restaurants;", conn);
       cmd.ExecuteNonQuery();
       conn.Close();
     }
