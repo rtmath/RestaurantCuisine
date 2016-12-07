@@ -97,6 +97,39 @@ namespace Food
       }
     }
 
+    public void Update(string newType)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE cuisine SET cuisine_type = @newType OUTPUT INSERTED.cuisine_type WHERE id = @CuisineId;", conn);
+
+      SqlParameter newCuisineTypeParam = new SqlParameter();
+      newCuisineTypeParam.ParameterName = "@newType";
+      newCuisineTypeParam.Value = newType;
+      cmd.Parameters.Add(newCuisineTypeParam);
+
+      SqlParameter newCuisineIdParam = new SqlParameter();
+      newCuisineIdParam.ParameterName = "@CuisineId";
+      newCuisineIdParam.Value = this.GetId();
+      cmd.Parameters.Add(newCuisineIdParam);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._cuisineType = rdr.GetString(0);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+
     public static Cuisine Find(int id)
     {
       SqlConnection conn = DB.Connection();
@@ -130,6 +163,26 @@ namespace Food
       }
 
       return newCuisine;
+    }
+
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM cuisine WHERE id = @CuisineId; DELETE FROM restaurants WHERE cuisine_id = @CuisineId;", conn);
+
+      SqlParameter cuisineIdParam = new SqlParameter();
+      cuisineIdParam.ParameterName = "@CuisineId";
+      cuisineIdParam.Value = this.GetId();
+
+      cmd.Parameters.Add(cuisineIdParam);
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
     }
 
     public static void DeleteAll()
