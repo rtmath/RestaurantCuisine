@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Test!</title>
+    <link rel="stylesheet" href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+    <link href="/Content/css/styles.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+       <form class="" action="/add-cuisine" method="post">
+         <input type="text" placeholder="Enter a new cuisine type here" name="cuisineform" value="">
+         <button type="submit" name="button">Add Cuisine</button>
+       </form>
+       @Html.Partial("footer.cshtml")
+    </div>
+  </body>
+</html>
