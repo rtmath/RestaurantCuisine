@@ -53,6 +53,8 @@ namespace Food
         List<Cuisine> allCuisines = Cuisine.GetAll();
         return View["index.cshtml", allCuisines];
       };
+
+      //TODO: IMPLEMENT UPDATE AND DELETE ROUTES
     }
   }
 }
